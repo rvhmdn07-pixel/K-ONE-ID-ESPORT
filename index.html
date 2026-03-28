@@ -23,7 +23,6 @@
         .header h1 span { color: var(--neon-red); }
         .header p { color: var(--neon-orange); font-size: 11px; letter-spacing: 4px; margin: 5px 0; font-weight: bold; }
 
-        /* NAVIGATION */
         nav {
             position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(5, 2, 5, 0.98);
             border-top: 1px solid var(--neon-red); display: flex; justify-content: space-around;
@@ -35,7 +34,6 @@
         }
         .nav-item.active { color: var(--neon-blue); text-shadow: 0 0 10px var(--neon-blue); }
 
-        /* PAGES */
         .page { display: none; padding: 20px; max-width: 600px; margin: 0 auto; animation: fadeIn 0.4s ease; }
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -60,9 +58,9 @@
             border: none; color: #fff; font-family: 'Orbitron'; font-weight: bold; border-radius: 6px;
             cursor: pointer; text-transform: uppercase; font-size: 11px; transition: 0.3s;
         }
+        .btn-outline { background: transparent; border: 1px solid #444; color: #fff; }
         .btn:disabled { opacity: 0.5; filter: grayscale(1); cursor: not-allowed; }
 
-        /* MODAL */
         .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); padding: 20px; }
         .modal-content { background: var(--panel-bg); border: 1px solid var(--neon-blue); max-width: 500px; margin: 10px auto; padding: 25px; border-radius: 12px; position: relative; max-height: 85vh; overflow-y: auto; }
         .close { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #fff; }
@@ -88,8 +86,24 @@
 
     <div id="home" class="page active"><div id="eventList"></div></div>
 
-    <div id="contact" class="page"><h3 class="title-font">Contact Person</h3><div id="contactList"></div></div>
+    <div id="report" class="page">
+        <button class="btn btn-outline" style="width:auto; margin-bottom:20px; font-size:10px;" onclick="showPage('home')">← KEMBALI</button>
+        <div class="card">
+            <h3 class="title-font">Report Match</h3>
+            <div class="input-group"><label>Event</label><input id="repEvent" class="input" readonly></div>
+            <div class="row">
+                <div class="col"><label>Tim Menang</label><input id="repWin" class="input"></div>
+                <div class="col" style="flex:0.4"><label>Skor</label><input id="repScoreWin" type="number" class="input"></div>
+            </div>
+            <div class="row">
+                <div class="col"><label>Tim Kalah</label><input id="repLose" class="input"></div>
+                <div class="col" style="flex:0.4"><label>Skor</label><input id="repScoreLose" type="number" class="input"></div>
+            </div>
+            <button class="btn" onclick="submitReport()" id="btnReport">SUBMIT DATA</button>
+        </div>
+    </div>
 
+    <div id="contact" class="page"><h3 class="title-font">Contact Person</h3><div id="contactList"></div></div>
     <div id="bracket" class="page"><h3 class="title-font">Bracket</h3><div id="bracketList"></div></div>
 
     <div id="regModal" class="modal">
@@ -132,12 +146,14 @@
         }
 
         function renderHome(events) {
-            // Icon Tanggal (${e[2]}) sudah dihapus sepenuhnya
             document.getElementById('eventList').innerHTML = events.map(e => `
                 <div class="card">
                     <div class="card-title">${e[0]}</div>
                     <div class="card-info">${e[1]}</div>
-                    <button class="btn" onclick="setupReg('${e[0]}', '${e[1]}')">REGISTER NOW</button>
+                    <div class="row">
+                        <button class="btn btn-outline col" onclick="setupReport('${e[0]}')">REPORT</button>
+                        <button class="btn col" onclick="setupReg('${e[0]}', '${e[1]}')">REGISTER</button>
+                    </div>
                 </div>
             `).join("");
         }
@@ -158,6 +174,31 @@
                     <span>${b[0]}</span><button class="btn" style="width:auto; padding:8px 15px" onclick="window.open('${b[1]}')">LIHAT</button>
                 </div>
             `).join("");
+        }
+
+        function setupReport(eventName) {
+            document.getElementById('repEvent').value = eventName;
+            showPage('report');
+        }
+
+        async function submitReport() {
+            const loading = document.getElementById('loading');
+            loading.style.display = 'flex';
+            const data = {
+                type: "submit",
+                event: document.getElementById('repEvent').value,
+                teamWin: document.getElementById('repWin').value,
+                scoreWin: document.getElementById('repScoreWin').value,
+                teamLose: document.getElementById('repLose').value,
+                scoreLose: document.getElementById('repScoreLose').value,
+                images: [] // Menyesuaikan doPost Anda
+            };
+            try {
+                await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(data) });
+                alert("Report Terkirim!");
+                location.reload();
+            } catch (e) { alert("Gagal kirim report."); }
+            finally { loading.style.display = 'none'; }
         }
 
         function setupReg(eventName, gameType) {
@@ -182,7 +223,6 @@
             document.getElementById('regModal').style.display = 'block';
         }
 
-        // FUNGSI KOMPRESI FOTO (Penyelamat agar tidak Error 500MB)
         const compressImage = (file) => new Promise((resolve) => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
