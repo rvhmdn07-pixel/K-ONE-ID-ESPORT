@@ -1,330 +1,278 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>K-ONE ID ESPORT ORGANIZER</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-ONE ID | Esports System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-red: #ff3c00; --neon-orange: #ff7b00; --neon-blue: #00e5ff;
+            --dark-bg: #070305; --panel-bg: rgba(15, 5, 5, 0.98); --glass-border: rgba(255, 60, 0, 0.3);
+        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body {
+            margin: 0; font-family: 'Rajdhani', sans-serif; background-color: var(--dark-bg);
+            background-image: radial-gradient(circle at 50% 0%, rgba(255, 60, 0, 0.2), transparent 70%), linear-gradient(to bottom, #000000, #0a0a0a);
+            color: white; min-height: 100vh; padding-bottom: 90px;
+        }
+        h1, h2, h3, .title-font { font-family: 'Orbitron', sans-serif; text-transform: uppercase; letter-spacing: 1px; }
 
-<!-- FONT -->
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
+        /* HEADER & NAV */
+        .header { text-align: center; padding: 30px 20px 10px; }
+        .header h1 { font-size: 28px; margin: 0; color: #fff; text-shadow: 0 0 10px var(--neon-red); }
+        .header h1 span { color: var(--neon-red); }
+        .header p { color: var(--neon-orange); font-size: 11px; letter-spacing: 4px; margin: 5px 0; font-weight: bold; }
 
-<style>
+        nav {
+            position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(5, 2, 5, 0.98);
+            border-top: 1px solid var(--neon-red); display: flex; justify-content: space-around;
+            padding: 12px 5px; z-index: 1000; backdrop-filter: blur(15px);
+        }
+        .nav-item {
+            background: none; border: none; color: #555; font-family: 'Orbitron', sans-serif;
+            font-size: 9px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px;
+        }
+        .nav-item.active { color: var(--neon-blue); text-shadow: 0 0 10px var(--neon-blue); }
 
-body {
-  margin:0;
-  font-family:'Orbitron',sans-serif;
-  background: radial-gradient(circle at top,#0b1220,#05080f);
-  color:white;
-}
+        /* PAGES */
+        .page { display: none; padding: 20px; max-width: 600px; margin: 0 auto; animation: fadeIn 0.4s ease; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* HEADER */
-.header {
-  text-align:center;
-  padding:20px 10px;
-}
+        /* CARDS */
+        .card {
+            background: var(--panel-bg); border: 1px solid var(--glass-border); border-radius: 12px;
+            padding: 20px; margin-bottom: 20px; position: relative; overflow: hidden;
+        }
+        .card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--neon-red); }
+        .card-title { font-size: 18px; color: #fff; margin: 0; font-weight: 700; }
+        .card-info { font-size: 13px; color: var(--neon-blue); margin: 5px 0 15px; }
 
-.header h2 {
-  margin:0;
-}
+        /* INPUTS & BUTTONS */
+        .input-group { margin-bottom: 15px; }
+        label { display: block; font-size: 11px; color: #888; margin-bottom: 6px; text-transform: uppercase; }
+        .input {
+            width: 100%; padding: 12px; background: rgba(0,0,0,0.7); border: 1px solid var(--glass-border);
+            color: #fff; border-radius: 6px; outline: none; font-family: 'Rajdhani'; font-size: 16px;
+        }
+        .input[readonly] { background: rgba(255,255,255,0.05); color: var(--neon-orange); }
+        .btn {
+            width: 100%; padding: 14px; background: linear-gradient(90deg, #ff1a00, #ff7b00);
+            border: none; color: #fff; font-family: 'Orbitron'; font-weight: bold; border-radius: 6px;
+            cursor: pointer; text-transform: uppercase; font-size: 11px;
+        }
+        .btn-outline { background: transparent; border: 1px solid var(--neon-blue); color: var(--neon-blue); }
 
-.header p {
-  color:#aaa;
-}
+        /* UPLOAD GRID */
+        .upload-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 15px 0; }
+        .upload-box {
+            aspect-ratio: 1/1; background: rgba(255,255,255,0.03); border: 1px dashed var(--neon-red);
+            border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; overflow: hidden;
+        }
+        .upload-box img { width: 100%; height: 100%; object-fit: cover; }
 
-/* NAV */
-nav {
-  display:flex;
-  justify-content:space-around;
-  background:rgba(255,255,255,0.05);
-  backdrop-filter: blur(10px);
-  padding:10px;
-  border-bottom:1px solid rgba(255,0,0,0.3);
-}
+        /* MODAL */
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); padding: 20px; }
+        .modal-content { background: var(--panel-bg); border: 1px solid var(--neon-blue); max-width: 500px; margin: 40px auto; padding: 25px; border-radius: 12px; position: relative; }
+        .close { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #fff; }
 
-nav button {
-  background:none;
-  border:none;
-  color:#ccc;
-}
-
-/* PAGE */
-.page {
-  display:none;
-  padding:10px;
-}
-.active {
-  display:block;
-}
-
-/* CARD */
-.card {
-  background:linear-gradient(145deg,#0d1628,#070c18);
-  border-radius:12px;
-  padding:15px;
-  margin:15px;
-  border:1px solid rgba(255,0,0,0.3);
-  box-shadow:0 0 15px rgba(255,0,0,0.2);
-  transition:0.3s;
-}
-
-.card:hover {
-  transform:translateY(-5px);
-  box-shadow:0 0 25px rgba(255,0,0,0.6);
-}
-
-/* BUTTON */
-.btn {
-  width:100%;
-  padding:12px;
-  margin-top:10px;
-  border:none;
-  border-radius:8px;
-  font-weight:bold;
-}
-
-.btn-register {
-  background:linear-gradient(90deg,#ff512f,#ff0000);
-}
-
-.btn-report {
-  background:linear-gradient(90deg,#00c6ff,#0072ff);
-}
-
-/* INPUT */
-input {
-  width:100%;
-  padding:10px;
-  margin:5px 0;
-  background:#111;
-  border:1px solid cyan;
-  color:white;
-}
-
-/* MODAL */
-.modal {
-  position:fixed;
-  top:5%;
-  left:5%;
-  width:90%;
-  height:90%;
-  background:#0b1220;
-  overflow:auto;
-  padding:20px;
-  display:none;
-}
-
-</style>
+        .loading-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.85); z-index:9999; display:none; align-items:center; justify-content:center; flex-direction:column; }
+        .row { display: flex; gap: 10px; }
+        .col { flex: 1; }
+    </style>
 </head>
-
 <body>
 
-<div class="header">
-  <h2>K-ONE ID ESPORT ORGANIZER</h2>
-  <p>Fast • Fair • Competitive</p>
-</div>
-
-<nav>
-<button onclick="show('home')">Home</button>
-<button onclick="show('report')">Report</button>
-<button onclick="show('contact')">Contact</button>
-<button onclick="show('bracket')">Bracket</button>
-<button onclick="show('login')">Admin</button>
-</nav>
-
-<div id="home" class="page active"></div>
-<div id="report" class="page"></div>
-<div id="contact" class="page"></div>
-<div id="bracket" class="page"></div>
-
-<div id="login" class="page">
-  <input id="user" placeholder="User">
-  <input id="pass" type="password" placeholder="Password">
-  <button onclick="login()">LOGIN</button>
-</div>
-
-<!-- REGISTER MODAL -->
-<div id="registerModal" class="modal">
-  <h3>REGISTER TEAM</h3>
-  <div id="formFields"></div>
-  <button onclick="submitRegister()">SUBMIT</button>
-  <button onclick="closeModal()">CLOSE</button>
-</div>
-
-<script>
-
-const URL = "https://script.google.com/macros/s/AKfycby24vYD-9imx3bwfWOwZMgGoM4gxxehc7iuocmfOklq-vRdz-2t-G0XLaDtDyCBOWXr/exec";
-
-// NAV
-function show(p){
-  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
-  document.getElementById(p).classList.add('active');
-}
-
-// HOME
-async function loadHome(){
-  let res = await fetch(URL+"?type=event");
-  let data = await res.json();
-
-  home.innerHTML = data.map(e=>`
-    <div class="card">
-      <b>${e[0]}</b><br>
-      ${e[1]}<br>
-      ${e[2]}
-
-      <button class="btn btn-register" onclick="openRegister('${e[0]}')">
-        REGISTER
-      </button>
-
-      <button class="btn btn-report" onclick="selectEvent('${e[0]}','${e[1]}')">
-        REPORT MATCH
-      </button>
+    <div id="loading" class="loading-overlay">
+        <h3 class="title-font" style="color:var(--neon-blue)">PROCESSING</h3>
+        <p>Mohon Tunggu...</p>
     </div>
-  `).join("");
-}
 
-// REPORT
-function selectEvent(ev,gm){
-  report.innerHTML = `
-    <input value="${ev}" id="event" readonly>
-    <input value="${gm}" id="game" readonly>
+    <div class="header">
+        <h1>K-ONE <span>ID</span></h1>
+        <p>ELITE ESPORTS ORGANIZER</p>
+    </div>
 
-    <input id="teamWin" placeholder="Team Win">
-    <input id="scoreWin" placeholder="Score">
+    <div id="home" class="page active"><div id="eventList"><p style="text-align:center">Memuat Turnamen...</p></div></div>
 
-    <input id="teamLose" placeholder="Team Lose">
-    <input id="scoreLose" placeholder="Score">
+    <div id="report" class="page">
+        <button class="btn btn-outline" style="width:auto; margin-bottom:20px; font-size:10px;" onclick="showPage('home')">← KEMBALI</button>
+        <div class="card">
+            <h3 class="title-font">Report Match</h3>
+            <div class="input-group"><label>Event</label><input id="repEvent" class="input" readonly></div>
+            <div class="input-group"><label>Type Game</label><input id="repGame" class="input" readonly></div>
+            <div class="row">
+                <div class="col"><label>Tim Menang</label><input id="repWin" class="input"></div>
+                <div class="col" style="flex:0.4"><label>Skor</label><input id="repScoreWin" type="number" class="input"></div>
+            </div>
+            <div class="row">
+                <div class="col"><label>Tim Kalah</label><input id="repLose" class="input"></div>
+                <div class="col" style="flex:0.4"><label>Skor</label><input id="repScoreLose" type="number" class="input"></div>
+            </div>
+            <div class="upload-grid" id="uploadGrid"></div>
+            <input type="file" id="fileInput" hidden multiple accept="image/*">
+            <button class="btn" onclick="submitReport()" id="btnReport">SUBMIT DATA</button>
+        </div>
+    </div>
 
-    <input type="file" id="images" multiple>
+    <div id="contact" class="page"><h3 class="title-font">Contact Person</h3><div id="contactList"></div></div>
+    <div id="bracket" class="page"><h3 class="title-font">Bracket</h3><div id="bracketList"></div></div>
+    <div id="admin" class="page">
+        <div class="card"><h3 class="title-font">Admin Login</h3>
+            <div class="input-group"><label>User ID</label><input id="admUser" class="input"></div>
+            <div class="input-group"><label>Password</label><input id="admPass" type="password" class="input"></div>
+            <button class="btn btn-outline" onclick="loginAdmin()">LOGIN</button>
+        </div>
+    </div>
 
-    <button onclick="submitMatch()">SUBMIT</button>
-  `;
+    <div id="regModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('regModal')">&times;</span>
+            <h3 class="title-font">Registration</h3>
+            <div class="input-group"><label>Event</label><input id="regEvent" class="input" readonly></div>
+            <div class="input-group"><label>Nama Team</label><input id="regTeam" class="input"></div>
+            <div class="input-group"><label>WA Kapten</label><input id="regWA" type="number" class="input"></div>
+            <button class="btn" onclick="processReg()" id="btnReg">DAFTAR SEKARANG</button>
+        </div>
+    </div>
 
-  show('report');
-}
+    <nav>
+        <button class="nav-item active" onclick="showPage('home', this)">HOME</button>
+        <button class="nav-item" onclick="showPage('contact', this)">CONTACT</button>
+        <button class="nav-item" onclick="showPage('bracket', this)">BRACKET</button>
+        <button class="nav-item" onclick="showPage('admin', this)">ADMIN</button>
+    </nav>
 
-// REGISTER
-async function openRegister(eventName){
-  let res = await fetch(URL+`?type=registerForm&event=${eventName}`);
-  let fields = await res.json();
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby24vYD-9imx3bwfWOwZMgGoM4gxxehc7iuocmfOklq-vRdz-2t-G0XLaDtDyCBOWXr/exec";
+        let uploadedImages = [];
 
-  let html="";
-  fields.forEach(f=>{
-    html += f.type==="file"
-      ? `<label>${f.label}</label><input type="file" data-name="${f.name}">`
-      : `<input placeholder="${f.label}" data-name="${f.name}">`;
-  });
+        // --- FETCH DATA (DISESUAIKAN DENGAN DOGET ANDA) ---
+        async function loadAppData() {
+            try {
+                // Ambil Event (type=event)
+                const resEvent = await fetch(SCRIPT_URL + "?type=event");
+                const events = await resEvent.json(); // Array of Array
+                renderHome(events);
 
-  formFields.innerHTML = html;
-  registerModal.style.display="block";
-  window.currentEvent = eventName;
-}
+                // Ambil Contact (type=contact)
+                const resContact = await fetch(SCRIPT_URL + "?type=contact");
+                const contacts = await resContact.json();
+                renderContact(events, contacts);
 
-function closeModal(){
-  registerModal.style.display="none";
-}
+                // Ambil Bracket (type=bracket)
+                const resBracket = await fetch(SCRIPT_URL + "?type=bracket");
+                const brackets = await resBracket.json();
+                renderBracket(brackets);
 
-// SUBMIT REGISTER
-async function submitRegister(){
+            } catch (e) { console.error(e); }
+        }
 
-  let inputs = document.querySelectorAll("#formFields input");
-  let formData = {};
-  let files = [];
+        function renderHome(events) {
+            document.getElementById('eventList').innerHTML = events.map(e => `
+                <div class="card">
+                    <div class="card-title">${e[0]}</div>
+                    <div class="card-info">${e[1]} | 📅 ${e[2]}</div>
+                    <div class="row">
+                        <button class="btn col" onclick="setupReport('${e[0]}', '${e[1]}')">REPORT</button>
+                        <button class="btn btn-outline col" onclick="setupReg('${e[0]}')">REGISTER</button>
+                    </div>
+                </div>
+            `).join("");
+        }
 
-  for(let i of inputs){
-    if(i.type==="file"){
-      let f = i.files[0];
-      if(f){
-        let b = await toBase64(f);
-        files.push({name:i.dataset.name,data:b});
-      }
-    } else {
-      formData[i.dataset.name] = i.value;
-    }
-  }
+        function renderContact(events, contacts) {
+            document.getElementById('contactList').innerHTML = events.map((e, idx) => {
+                const teamList = contacts.filter(c => c[0] === e[0]);
+                return `
+                <div class="card" onclick="toggleAcc('c-${idx}')" style="cursor:pointer">
+                    <div class="card-title" style="font-size:14px">${e[0]} ▼</div>
+                    <div id="c-${idx}" style="display:none; margin-top:10px; border-top:1px solid #333; padding-top:10px">
+                        ${teamList.map(t => `<div style="display:flex; justify-content:space-between; margin-bottom:5px"><span>${t[1]}</span><button onclick="window.open('https://wa.me/${t[2]}')">WA</button></div>`).join("")}
+                    </div>
+                </div>`;
+            }).join("");
+        }
 
-  await fetch(URL,{
-    method:"POST",
-    body:JSON.stringify({
-      type:"register",
-      event:currentEvent,
-      formData:formData,
-      files:files
-    })
-  });
+        function renderBracket(brackets) {
+            document.getElementById('bracketList').innerHTML = brackets.map(b => `
+                <div class="card" style="display:flex; justify-content:space-between; align-items:center">
+                    <span>${b[0]}</span><button class="btn-outline" style="width:auto; padding:8px" onclick="window.open('${b[1]}')">LIHAT</button>
+                </div>
+            `).join("");
+        }
 
-  alert("Registrasi berhasil!");
-  closeModal();
-}
+        // --- UI LOGIC ---
+        function showPage(id, btn) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            if(btn) btn.classList.add('active');
+        }
 
-// SUBMIT MATCH
-async function submitMatch(){
-  let files = images.files;
-  let imgs=[];
+        function setupReport(name, game) { document.getElementById('repEvent').value = name; document.getElementById('repGame').value = game; showPage('report'); }
+        function setupReg(name) { document.getElementById('regEvent').value = name; document.getElementById('regModal').style.display = 'block'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        function toggleAcc(id) { const x = document.getElementById(id); x.style.display = x.style.display === 'none' ? 'block' : 'none'; }
 
-  for(let f of files){
-    if(f.size>10*1024*1024)return alert("Max 10MB");
-    imgs.push(await toBase64(f));
-  }
+        // --- UPLOAD ---
+        const fInput = document.getElementById('fileInput');
+        function renderUpload() {
+            const grid = document.getElementById('uploadGrid'); grid.innerHTML = "";
+            for(let i=0; i<8; i++) {
+                const box = document.createElement('div'); box.className = 'upload-box';
+                if(uploadedImages[i]) { box.innerHTML = `<img src="${uploadedImages[i]}">`; }
+                else { box.innerHTML = `<span>+</span>`; box.onclick = () => fInput.click(); }
+                grid.appendChild(box);
+            }
+        }
+        fInput.onchange = (e) => {
+            for(let f of e.target.files) {
+                if(uploadedImages.length >= 8) break;
+                const r = new FileReader(); r.onload = (res) => { uploadedImages.push(res.target.result); renderUpload(); }; r.readAsDataURL(f);
+            }
+        };
 
-  await fetch(URL,{
-    method:"POST",
-    body:JSON.stringify({
-      type:"submit",
-      event:event.value,
-      game:game.value,
-      teamWin:teamWin.value,
-      scoreWin:scoreWin.value,
-      teamLose:teamLose.value,
-      scoreLose:scoreLose.value,
-      images:imgs
-    })
-  });
+        // --- SUBMIT (DISESUAIKAN DENGAN DOPOST ANDA) ---
+        async function submitReport() {
+            const data = { 
+                type: "submit", // Sesuai if(data.type==="submit")
+                event: document.getElementById('repEvent').value,
+                game: document.getElementById('repGame').value,
+                teamWin: document.getElementById('repWin').value, // Sesuai data.teamWin
+                scoreWin: document.getElementById('repScoreWin').value,
+                teamLose: document.getElementById('repLose').value,
+                scoreLose: document.getElementById('repScoreLose').value,
+                images: uploadedImages // Sesuai data.images
+            };
+            document.getElementById('loading').style.display = 'flex';
+            await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(data) });
+            alert("Berhasil!"); location.reload();
+        }
 
-  alert("Match berhasil!");
-}
+        async function processReg() {
+            const data = { 
+                type: "register", 
+                event: document.getElementById('regEvent').value,
+                team: document.getElementById('regTeam').value,
+                wa: document.getElementById('regWA').value,
+                files: [], // AppScript Anda butuh data.files meskipun kosong
+                formData: { Nama_Team: document.getElementById('regTeam').value, WA: document.getElementById('regWA').value }
+            };
+            document.getElementById('loading').style.display = 'flex';
+            await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(data) });
+            alert("Terdaftar!"); location.reload();
+        }
 
-// CONTACT
-async function loadContact(){
-  let res = await fetch(URL+"?type=contact");
-  let data = await res.json();
-  contact.innerHTML = data.map(d=>`${d[0]} - ${d[1]} <a href="https://wa.me/${d[2]}">Chat</a>`).join("<br>");
-}
+        async function loginAdmin() {
+            const data = { type: "login", user: document.getElementById('admUser').value, pass: document.getElementById('admPass').value };
+            const res = await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(data) });
+            const result = await res.json();
+            if(result.status) alert("Admin Berhasil Login!"); else alert("Gagal!");
+        }
 
-// BRACKET
-async function loadBracket(){
-  let res = await fetch(URL+"?type=bracket");
-  let data = await res.json();
-  bracket.innerHTML = data.map(d=>`${d[0]} - <a href="${d[1]}" target="_blank">Lihat</a>`).join("<br>");
-}
-
-// LOGIN
-async function login(){
-  let res = await fetch(URL,{
-    method:"POST",
-    body:JSON.stringify({
-      type:"login",
-      user:user.value,
-      pass:pass.value
-    })
-  });
-
-  let r = await res.json();
-  alert(r.status?"Login berhasil":"Salah");
-}
-
-// BASE64
-function toBase64(file){
-  return new Promise(res=>{
-    let r=new FileReader();
-    r.readAsDataURL(file);
-    r.onload=()=>res(r.result);
-  });
-}
-
-loadHome();
-loadContact();
-loadBracket();
-
-</script>
-
+        loadAppData(); renderUpload();
+    </script>
 </body>
 </html>
