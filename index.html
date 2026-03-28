@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>K-ONE ID | Tournament System</title>
+    <title>K-ONE ID | Esports System</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -18,30 +18,28 @@
         }
         h1, h2, h3, h4, .title-font { font-family: 'Orbitron', sans-serif; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* HEADER */
         .header { text-align: center; padding: 30px 20px 10px; }
         .header h1 { font-size: 28px; margin: 0; color: #fff; text-shadow: 0 0 10px var(--neon-red); }
         .header h1 span { color: var(--neon-red); }
         .header p { color: var(--neon-orange); font-size: 11px; letter-spacing: 4px; margin: 5px 0; font-weight: bold; }
 
-        /* NAVBAR */
+        /* NAVIGATION */
         nav {
             position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(5, 2, 5, 0.98);
             border-top: 1px solid var(--neon-red); display: flex; justify-content: space-around;
-            padding: 12px 5px; z-index: 1000; backdrop-filter: blur(15px); box-shadow: 0 -5px 20px rgba(255,60,0,0.3);
+            padding: 12px 5px; z-index: 1000; backdrop-filter: blur(15px);
         }
         .nav-item {
             background: none; border: none; color: #555; font-family: 'Orbitron', sans-serif;
-            font-size: 9px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px; transition: 0.3s;
+            font-size: 9px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px;
         }
-        .nav-item.active { color: var(--neon-blue); text-shadow: 0 0 10px var(--neon-blue); transform: translateY(-3px); }
+        .nav-item.active { color: var(--neon-blue); text-shadow: 0 0 10px var(--neon-blue); }
 
         /* PAGES */
         .page { display: none; padding: 20px; max-width: 600px; margin: 0 auto; animation: fadeIn 0.4s ease; }
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* CARDS */
         .card {
             background: var(--panel-bg); border: 1px solid var(--glass-border); border-radius: 12px;
             padding: 20px; margin-bottom: 20px; position: relative; overflow: hidden;
@@ -50,42 +48,37 @@
         .card-title { font-size: 18px; color: #fff; margin: 0; font-weight: 700; }
         .card-info { font-size: 13px; color: var(--neon-blue); margin: 5px 0 15px; }
 
-        /* FORMS */
         .input-group { margin-bottom: 15px; }
         label { display: block; font-size: 11px; color: #888; margin-bottom: 6px; text-transform: uppercase; }
         .input {
             width: 100%; padding: 12px; background: rgba(0,0,0,0.7); border: 1px solid var(--glass-border);
             color: #fff; border-radius: 6px; outline: none; font-family: 'Rajdhani'; font-size: 16px;
         }
-        .input:focus { border-color: var(--neon-blue); }
 
-        /* BUTTONS */
         .btn {
             width: 100%; padding: 14px; background: linear-gradient(90deg, #ff1a00, #ff7b00);
             border: none; color: #fff; font-family: 'Orbitron'; font-weight: bold; border-radius: 6px;
             cursor: pointer; text-transform: uppercase; font-size: 11px; transition: 0.3s;
         }
-        .btn-outline { background: transparent; border: 1px solid var(--neon-blue); color: var(--neon-blue); }
         .btn:disabled { opacity: 0.5; filter: grayscale(1); cursor: not-allowed; }
 
         /* MODAL */
         .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); padding: 20px; }
-        .modal-content { background: var(--panel-bg); border: 1px solid var(--neon-blue); max-width: 500px; margin: 20px auto; padding: 25px; border-radius: 12px; position: relative; max-height: 85vh; overflow-y: auto; }
+        .modal-content { background: var(--panel-bg); border: 1px solid var(--neon-blue); max-width: 500px; margin: 10px auto; padding: 25px; border-radius: 12px; position: relative; max-height: 85vh; overflow-y: auto; }
         .close { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #fff; }
 
-        /* LOADING */
-        .loading-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.85); z-index:9999; display:none; align-items:center; justify-content:center; flex-direction:column; }
+        .loading-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.9); z-index:9999; display:none; align-items:center; justify-content:center; flex-direction:column; }
         
+        hr { border: 0; border-top: 1px solid var(--glass-border); margin: 20px 0; }
         .row { display: flex; gap: 10px; }
         .col { flex: 1; }
-        hr { border: 0; border-top: 1px solid var(--glass-border); margin: 20px 0; }
     </style>
 </head>
 <body>
 
     <div id="loading" class="loading-overlay">
         <h3 class="title-font" style="color:var(--neon-blue); margin:0;">PROCESSING</h3>
-        <p style="font-size:12px; letter-spacing:2px;">MOHON TUNGGU...</p>
+        <p style="font-size:12px; letter-spacing:2px; color:#fff;">MOHON TUNGGU...</p>
     </div>
 
     <div class="header">
@@ -95,41 +88,14 @@
 
     <div id="home" class="page active"><div id="eventList"></div></div>
 
-    <div id="report" class="page">
-        <button class="btn btn-outline" style="width:auto; margin-bottom:20px; font-size:10px;" onclick="showPage('home')">← KEMBALI</button>
-        <div class="card">
-            <h3 class="title-font">Report Match</h3>
-            <div class="input-group"><label>Event</label><input id="repEvent" class="input" readonly></div>
-            <div class="input-group"><label>Game</label><input id="repGame" class="input" readonly></div>
-            <div class="row">
-                <div class="col"><label>Tim Menang</label><input id="repWin" class="input"></div>
-                <div class="col" style="flex:0.4"><label>Skor</label><input id="repScoreWin" type="number" class="input"></div>
-            </div>
-            <div class="row">
-                <div class="col"><label>Tim Kalah</label><input id="repLose" class="input"></div>
-                <div class="col" style="flex:0.4"><label>Skor</label><input id="repScoreLose" type="number" class="input"></div>
-            </div>
-            <button class="btn" onclick="submitReport()" id="btnReport">SUBMIT DATA</button>
-        </div>
-    </div>
-
     <div id="contact" class="page"><h3 class="title-font">Contact Person</h3><div id="contactList"></div></div>
+
     <div id="bracket" class="page"><h3 class="title-font">Bracket</h3><div id="bracketList"></div></div>
-    
-    <div id="admin" class="page">
-        <div class="card">
-            <h3 class="title-font">Admin Login</h3>
-            <div class="input-group"><label>User ID</label><input id="admUser" class="input"></div>
-            <div class="input-group"><label>Password</label><input id="admPass" type="password" class="input"></div>
-            <button class="btn btn-outline" onclick="loginAdmin()">LOGIN</button>
-        </div>
-    </div>
 
     <div id="regModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('regModal')">&times;</span>
             <h3 class="title-font" style="color:var(--neon-blue); margin-top:0;">Registration</h3>
-            <div class="input-group"><label>Event</label><input id="regEvent" class="input" readonly></div>
             <div id="dynamicFields"></div>
             <button class="btn" onclick="processReg()" id="btnReg">DAFTAR SEKARANG</button>
         </div>
@@ -139,13 +105,11 @@
         <button class="nav-item active" onclick="showPage('home', this)">HOME</button>
         <button class="nav-item" onclick="showPage('contact', this)">CONTACT</button>
         <button class="nav-item" onclick="showPage('bracket', this)">BRACKET</button>
-        <button class="nav-item" onclick="showPage('admin', this)">ADMIN</button>
     </nav>
 
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby24vYD-9imx3bwfWOwZMgGoM4gxxehc7iuocmfOklq-vRdz-2t-G0XLaDtDyCBOWXr/exec";
         
-        // --- TEMPLATE KONFIGURASI ---
         const GAME_TEMPLATES = {
             "MLBB": { fields: ["Nama Lengkap", "Game ID", "Server ID"], mCount: 5 },
             "PUBG": { fields: ["Nama Lengkap", "User ID"], mCount: 4 }
@@ -164,31 +128,26 @@
                 const resBracket = await fetch(SCRIPT_URL + "?type=bracket");
                 const brackets = await resBracket.json();
                 renderBracket(brackets);
-            } catch (e) { console.error("Load Gagal"); }
+            } catch (e) { console.error("Gagal muat data"); }
         }
 
         function renderHome(events) {
+            // Icon Tanggal (${e[2]}) sudah dihapus sepenuhnya
             document.getElementById('eventList').innerHTML = events.map(e => `
                 <div class="card">
                     <div class="card-title">${e[0]}</div>
                     <div class="card-info">${e[1]}</div>
-                    <div class="row">
-                        <button class="btn col" onclick="setupReport('${e[0]}', '${e[1]}')">REPORT</button>
-                        <button class="btn btn-outline col" onclick="setupReg('${e[0]}', '${e[1]}')">REGISTER</button>
-                    </div>
+                    <button class="btn" onclick="setupReg('${e[0]}', '${e[1]}')">REGISTER NOW</button>
                 </div>
             `).join("");
         }
 
         function renderContact(events, contacts) {
             document.getElementById('contactList').innerHTML = events.map((e, idx) => {
-                const teamList = contacts.filter(c => c[0] === e[0]);
-                return `
-                <div class="card" onclick="toggleAcc('c-${idx}')" style="cursor:pointer">
-                    <div class="card-title" style="font-size:14px">${e[0]} ▼</div>
-                    <div id="c-${idx}" style="display:none; margin-top:10px; border-top:1px solid #333; padding-top:10px">
-                        ${teamList.map(t => `<div style="display:flex; justify-content:space-between; margin-bottom:5px"><span>${t[1]}</span><button onclick="window.open('https://wa.me/${t[2]}')">WA</button></div>`).join("")}
-                    </div>
+                const list = contacts.filter(c => c[0] === e[0]);
+                return `<div class="card">
+                    <div class="card-title" style="font-size:14px">${e[0]}</div>
+                    <div style="margin-top:10px">${list.map(t => `<p style="display:flex; justify-content:space-between"><span>${t[1]}</span> <a href="https://wa.me/${t[2]}" style="color:var(--neon-blue)">HUBUNGI</a></p>`).join("")}</div>
                 </div>`;
             }).join("");
         }
@@ -196,26 +155,24 @@
         function renderBracket(brackets) {
             document.getElementById('bracketList').innerHTML = brackets.map(b => `
                 <div class="card" style="display:flex; justify-content:space-between; align-items:center">
-                    <span>${b[0]}</span><button class="btn-outline" style="width:auto; padding:8px" onclick="window.open('${b[1]}')">LIHAT</button>
+                    <span>${b[0]}</span><button class="btn" style="width:auto; padding:8px 15px" onclick="window.open('${b[1]}')">LIHAT</button>
                 </div>
             `).join("");
         }
 
         function setupReg(eventName, gameType) {
             const container = document.getElementById('dynamicFields');
-            document.getElementById('regEvent').value = eventName;
-            
             let templateKey = Object.keys(GAME_TEMPLATES).find(k => gameType.toUpperCase().includes(k)) || "MLBB";
             let template = GAME_TEMPLATES[templateKey];
 
             let html = `
+                <div class="input-group"><label>Event</label><input id="regEvent" class="input" value="${eventName}" readonly></div>
                 <div class="input-group"><label>Nama Team</label><input id="regTeam" class="input" required></div>
                 <div class="input-group"><label>WhatsApp Team</label><input id="regWA" type="number" class="input" required></div>
-                <hr>
-            `;
+                <hr>`;
 
             for (let i = 1; i <= template.mCount; i++) {
-                html += `<h4 style="font-size:11px; color:var(--neon-orange); margin-bottom:10px">MEMBER ${i}</h4>`;
+                html += `<h4 style="font-size:11px; color:var(--neon-orange)">MEMBER ${i}</h4>`;
                 template.fields.forEach(f => {
                     html += `<div class="input-group"><label>${f}</label><input class="input m-data" data-member="${i}" data-label="${f}" required></div>`;
                 });
@@ -225,27 +182,47 @@
             document.getElementById('regModal').style.display = 'block';
         }
 
+        // FUNGSI KOMPRESI FOTO (Penyelamat agar tidak Error 500MB)
+        const compressImage = (file) => new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = (e) => {
+                const img = new Image();
+                img.src = e.target.result;
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    let width = img.width;
+                    let height = img.height;
+                    const MAX = 1000;
+                    if (width > MAX) { height *= MAX / width; width = MAX; }
+                    canvas.width = width; canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    resolve(canvas.toDataURL('image/jpeg', 0.6));
+                };
+            };
+        });
+
         async function processReg() {
             const btn = document.getElementById('btnReg');
             const loading = document.getElementById('loading');
-            
             loading.style.display = 'flex';
             btn.disabled = true;
 
             try {
-                let memberData = [];
+                let memberDetails = [];
                 document.querySelectorAll('.m-data').forEach(input => {
-                    let mIdx = input.dataset.member - 1;
-                    if(!memberData[mIdx]) memberData[mIdx] = {};
-                    memberData[mIdx][input.dataset.label] = input.value;
+                    let idx = input.dataset.member - 1;
+                    if(!memberDetails[idx]) memberDetails[idx] = {};
+                    memberDetails[idx][input.dataset.label] = input.value;
                 });
 
                 let files = [];
                 const fileInputs = document.querySelectorAll('.m-file');
                 for (let input of fileInputs) {
                     if (input.files[0]) {
-                        const base64 = await toBase64(input.files[0]);
-                        files.push({ data: base64, name: `M${input.dataset.member}_${document.getElementById('regTeam').value}` });
+                        const base64 = await compressImage(input.files[0]);
+                        files.push({ data: base64, name: `M${input.dataset.member}_${document.getElementById('regTeam').value}.jpg` });
                     }
                 }
 
@@ -254,22 +231,16 @@
                     event: document.getElementById('regEvent').value,
                     team: document.getElementById('regTeam').value,
                     wa: document.getElementById('regWA').value,
-                    formData: memberData, // Data member masuk ke sini
+                    formData: JSON.stringify(memberDetails),
                     files: files
                 };
 
                 await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
                 alert("Pendaftaran Berhasil!");
                 location.reload();
-            } catch (e) { alert("Error"); } finally { loading.style.display = 'none'; btn.disabled = false; }
+            } catch (e) { alert("Eror. Pastikan internet stabil."); }
+            finally { loading.style.display = 'none'; btn.disabled = false; }
         }
-
-        const toBase64 = file => new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = e => reject(e);
-        });
 
         function showPage(id, btn) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -278,8 +249,7 @@
             if(btn) btn.classList.add('active');
         }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-        function toggleAcc(id) { const x = document.getElementById(id); x.style.display = x.style.display === 'none' ? 'block' : 'none'; }
-
+        
         loadData();
     </script>
 </body>
